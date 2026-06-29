@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Which Dead Poet Are You?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1410;
+      --parchment: #f5ede0;
+      --cream: #faf4ec;
+      --sepia: #8b6f4e;
+      --rose: #c4848a;
+      --dusty-rose: #e8b4b8;
+      --mocha: #3d2b1f;
+      --gold: #b8965a;
+      --sage: #7a8c72;
+      --shadow: rgba(26, 20, 16, 0.18);
+    }
+
+    body {
+      background-color: #1e1612;
+      font-family: 'EB Garamond', Georgia, serif;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- BACKGROUND ---- */
+    .bg-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-paper {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, #2e1f14 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 0% 100%, #1a0f09 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 100% 100%, #1a0f09 0%, transparent 60%),
+        #120d09;
+    }
+
+    /* Candlelight glow */
+    .glow-center {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(184, 150, 90, 0.12) 0%, transparent 70%);
+      animation: flicker 4s ease-in-out infinite alternate;
+    }
+    .glow-left {
+      position: absolute;
+      top: 60%;
+      left: -5%;
+      width: 300px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(196, 132, 138, 0.08) 0%, transparent 70%);
+    }
+    .glow-right {
+      position: absolute;
+      top: 60%;
+      right: -5%;
+      width: 300px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(196, 132, 138, 0.08) 0%, transparent 70%);
+    }
+
+    @keyframes flicker {
+      0%   { opacity: 0.8; transform: translateX(-50%) scale(1); }
+      100% { opacity: 1;   transform: translateX(-50%) scale(1.05); }
+    }
+
+    /* Decorative SVG bookshelf silhouette at bottom */
+    .shelf-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0.18;
+    }
+
+    /* Floating particles (dust motes) */
+    .mote {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(184, 150, 90, 0.5);
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) translateX(20px); opacity: 0; }
+    }
+
+    /* ---- CARD ---- */
+    .quiz-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: linear-gradient(160deg, #f7efe3 0%, #ede0cc 100%);
+      border-radius: 2px;
+      max-width: 620px;
+      width: 100%;
+      padding: 3rem 3rem 2.5rem;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(139, 111, 78, 0.3),
+        0 4px 6px rgba(18,13,9,0.3),
+        0 20px 60px rgba(18,13,9,0.5),
+        0 0 120px rgba(184, 150, 90, 0.06);
+    }
+
+    /* Torn paper edge effect top */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg,
+        #f7efe3 0%, #ede0cc 8%, #f5e8d5 16%, #ede0cc 24%,
+        #f7efe3 32%, #ede0cc 40%, #f7efe3 48%, #ede0cc 56%,
+        #f5e8d5 64%, #f7efe3 72%, #ede0cc 80%, #f7efe3 88%, #ede0cc 100%
+      );
+      clip-path: polygon(0% 100%, 1% 0%, 3% 80%, 5% 20%, 7% 90%, 9% 10%, 11% 70%, 13% 30%, 15% 85%, 17% 5%, 19% 75%, 21% 25%, 23% 95%, 25% 15%, 27% 80%, 29% 40%, 31% 90%, 33% 20%, 35% 70%, 37% 35%, 39% 85%, 41% 10%, 43% 75%, 45% 30%, 47% 90%, 49% 5%, 51% 80%, 53% 20%, 55% 88%, 57% 12%, 59% 72%, 61% 28%, 63% 85%, 65% 5%, 67% 78%, 69% 22%, 71% 92%, 73% 8%, 75% 68%, 77% 32%, 79% 88%, 81% 18%, 83% 75%, 85% 25%, 87% 95%, 89% 15%, 91% 70%, 93% 40%, 95% 82%, 97% 12%, 99% 60%, 100% 100%);
+    }
+
+    /* Ink stain decorative corner */
+    .corner-deco {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--sepia);
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+    .corner-tl { top: 1.2rem; left: 1.5rem; }
+    .corner-tr { top: 1.2rem; right: 1.5rem; text-align: right; }
+
+    /* Divider line */
+    .divider {
+      border: none;
+      border-top: 0.5px solid rgba(139, 111, 78, 0.35);
+      margin: 1.25rem 0;
+    }
+
+    /* ---- HEADER ---- */
+    .eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      text-align: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 400;
+      color: var(--mocha);
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-style: italic;
+      color: var(--sepia);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- PROGRESS ---- */
+    .progress-wrap {
+      margin-bottom: 1.75rem;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--sepia);
+      font-family: 'Cormorant Garamond', serif;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      height: 2px;
+      background: rgba(139, 111, 78, 0.2);
+      border-radius: 1px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      border-radius: 1px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ---- QUESTION ---- */
+    .question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.05rem, 3vw, 1.25rem);
+      font-weight: 400;
+      color: var(--mocha);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- OPTIONS ---- */
+    .options { display: flex; flex-direction: column; gap: 10px; }
+
+    .opt {
+      background: transparent;
+      border: 0.5px solid rgba(139, 111, 78, 0.35);
+      border-radius: 1px;
+      padding: 13px 18px;
+      text-align: left;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 15px;
+      color: #3d2b1f;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .opt::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0;
+      background: linear-gradient(90deg, rgba(196,132,138,0.15), transparent);
+      transition: width 0.25s ease;
+    }
+
+    .opt:hover {
+      border-color: var(--rose);
+      background: rgba(196, 132, 138, 0.06);
+    }
+
+    .opt:hover::before { width: 100%; }
+
+    .opt.selected {
+      border-color: var(--rose);
+      background: rgba(196, 132, 138, 0.12);
+      color: var(--mocha);
+    }
+
+    .opt.selected::after {
+      content: '✦';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--rose);
+      font-size: 10px;
+    }
+
+    /* ---- RESULT ---- */
+    .result-wrap { text-align: center; }
+
+    .result-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      margin-bottom: 1rem;
+    }
+
+    /* Character silhouette illustration area */
+    .char-illustration {
+      position: relative;
+      height: 220px;
+      margin: 0 -3rem 1.5rem;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .char-svg-wrap {
+      position: relative;
+      z-index: 2;
+    }
+
+    .illustration-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(232, 180, 184, 0.08) 100%);
+    }
+
+    /* Decorative arch behind character */
+    .arch-deco {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .char-name-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--mocha);
+      margin-bottom: 0.3rem;
+    }
+
+    .char-epithet {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1rem;
+    }
+
+    .char-quote-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-style: italic;
+      color: var(--sepia);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+      padding: 0 1rem;
+    }
+
+    .char-desc-display {
+      font-size: 15.5px;
+      color: #5a3e2b;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .traits-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .trait {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      border: 0.5px solid rgba(139, 111, 78, 0.4);
+      padding: 4px 12px;
+      border-radius: 1px;
+    }
+
+    .restart-btn {
+      background: transparent;
+      border: 0.5px solid rgba(139, 111, 78, 0.5);
+      padding: 11px 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .restart-btn:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+      background: rgba(196, 132, 138, 0.05);
+    }
+
+    /* ---- INTRO SCREEN ---- */
+    .intro-wrap { text-align: center; }
+
+    .intro-illustration {
+      margin: 0 -3rem 1.5rem;
+      height: 200px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .start-btn {
+      background: transparent;
+      border: 0.5px solid var(--rose);
+      padding: 13px 40px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .start-btn:hover {
+      background: rgba(196, 132, 138, 0.1);
+    }
+
+    .intro-body {
+      font-size: 15.5px;
+      color: #5a3e2b;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    @media (max-width: 500px) {
+      .card { padding: 2rem 1.5rem 2rem; }
+      .char-illustration { margin: 0 -1.5rem 1.5rem; }
+      .intro-illustration { margin: 0 -1.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-scene">
+  <div class="bg-paper"></div>
+  <div class="glow-center"></div>
+  <div class="glow-left"></div>
+  <div class="glow-right"></div>
+
+  <!-- Bookshelf silhouette -->
+  <svg class="shelf-silhouette" viewBox="0 0 1440 220" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+    <!-- Shelf plank -->
+    <rect x="0" y="190" width="1440" height="10" fill="#c9a87c"/>
+    <rect x="0" y="198" width="1440" height="22" fill="#b8965a"/>
+    <!-- Books various sizes -->
+    <rect x="10" y="110" width="22" height="80" fill="#7a5c3a"/>
+    <rect x="32" y="130" width="18" height="60" fill="#5a3e2b"/>
+    <rect x="50" y="105" width="25" height="85" fill="#8b6f4e"/>
+    <rect x="75" y="120" width="16" height="70" fill="#9b7a5a"/>
+    <rect x="91" y="115" width="28" height="75" fill="#6b4f35"/>
+    <rect x="119" y="125" width="20" height="65" fill="#c4848a"/>
+    <rect x="139" y="108" width="24" height="82" fill="#7a5c3a"/>
+    <rect x="163" y="118" width="15" height="72" fill="#5a3e2b"/>
+    <rect x="178" y="100" width="30" height="90" fill="#8b6f4e"/>
+    <rect x="208" y="122" width="19" height="68" fill="#b8965a"/>
+    <rect x="227" y="112" width="23" height="78" fill="#7a8c72"/>
+    <rect x="250" y="105" width="26" height="85" fill="#5a3e2b"/>
+    <rect x="276" y="128" width="17" height="62" fill="#c4848a"/>
+    <rect x="293" y="115" width="29" height="75" fill="#8b6f4e"/>
+    <rect x="322" y="120" width="21" height="70" fill="#9b7a5a"/>
+    <!-- Gap for vase -->
+    <ellipse cx="370" cy="185" rx="14" ry="20" fill="#6b4f35"/>
+    <rect x="360" y="155" width="20" height="30" fill="#6b4f35"/>
+    <!-- More books -->
+    <rect x="398" y="110" width="22" height="80" fill="#7a5c3a"/>
+    <rect x="420" y="125" width="18" height="65" fill="#c4848a"/>
+    <rect x="438" y="105" width="25" height="85" fill="#8b6f4e"/>
+    <rect x="463" y="118" width="20" height="72" fill="#5a3e2b"/>
+    <rect x="483" y="100" width="28" height="90" fill="#9b7a5a"/>
+    <rect x="511" y="115" width="16" height="75" fill="#7a8c72"/>
+    <rect x="527" y="108" width="24" height="82" fill="#7a5c3a"/>
+    <rect x="551" y="122" width="22" height="68" fill="#b8965a"/>
+    <rect x="573" y="112" width="19" height="78" fill="#5a3e2b"/>
+    <!-- Candle -->
+    <rect x="608" y="155" width="10" height="35" fill="#f5ede0" opacity="0.9"/>
+    <ellipse cx="613" cy="155" rx="6" ry="4" fill="#f5ede0" opacity="0.8"/>
+    <path d="M613 150 Q615 140 613 132 Q611 140 613 150Z" fill="#f5a623" opacity="0.9"/>
+    <!-- More books -->
+    <rect x="628" y="118" width="23" height="72" fill="#c4848a"/>
+    <rect x="651" y="105" width="25" height="85" fill="#8b6f4e"/>
+    <rect x="676" y="120" width="18" height="70" fill="#7a5c3a"/>
+    <rect x="694" y="110" width="26" height="80" fill="#5a3e2b"/>
+    <rect x="720" y="125" width="20" height="65" fill="#9b7a5a"/>
+    <rect x="740" y="108" width="29" height="82" fill="#7a8c72"/>
+    <rect x="769" y="115" width="17" height="75" fill="#c4848a"/>
+    <!-- Globe -->
+    <circle cx="810" cy="168" r="18" fill="#5a3e2b" opacity="0.7"/>
+    <rect x="808" y="185" width="4" height="8" fill="#8b6f4e"/>
+    <!-- More books -->
+    <rect x="838" y="112" width="22" height="78" fill="#7a5c3a"/>
+    <rect x="860" y="122" width="19" height="68" fill="#b8965a"/>
+    <rect x="879" y="105" width="25" height="85" fill="#8b6f4e"/>
+    <rect x="904" y="118" width="23" height="72" fill="#5a3e2b"/>
+    <rect x="927" y="110" width="20" height="80" fill="#9b7a5a"/>
+    <rect x="947" y="125" width="16" height="65" fill="#c4848a"/>
+    <rect x="963" y="100" width="28" height="90" fill="#7a5c3a"/>
+    <rect x="991" y="115" width="24" height="75" fill="#8b6f4e"/>
+    <rect x="1015" y="120" width="21" height="70" fill="#7a8c72"/>
+    <rect x="1036" y="108" width="18" height="82" fill="#5a3e2b"/>
+    <!-- Skull (gothic touch) -->
+    <ellipse cx="1078" cy="172" rx="12" ry="14" fill="#e8dcc8" opacity="0.6"/>
+    <ellipse cx="1074" cy="175" rx="3" ry="4" fill="#2a1f14" opacity="0.6"/>
+    <ellipse cx="1082" cy="175" rx="3" ry="4" fill="#2a1f14" opacity="0.6"/>
+    <!-- More books -->
+    <rect x="1100" y="112" width="22" height="78" fill="#c4848a"/>
+    <rect x="1122" y="105" width="25" height="85" fill="#8b6f4e"/>
+    <rect x="1147" y="118" width="20" height="72" fill="#7a5c3a"/>
+    <rect x="1167" y="110" width="28" height="80" fill="#5a3e2b"/>
+    <rect x="1195" y="122" width="19" height="68" fill="#9b7a5a"/>
+    <rect x="1214" y="100" width="26" height="90" fill="#7a8c72"/>
+    <rect x="1240" y="115" width="23" height="75" fill="#b8965a"/>
+    <rect x="1263" y="108" width="18" height="82" fill="#7a5c3a"/>
+    <rect x="1281" y="125" width="25" height="65" fill="#8b6f4e"/>
+    <rect x="1306" y="112" width="20" height="78" fill="#5a3e2b"/>
+    <rect x="1326" y="105" width="24" height="85" fill="#c4848a"/>
+    <rect x="1350" y="118" width="22" height="72" fill="#7a5c3a"/>
+    <rect x="1372" y="120" width="28" height="70" fill="#8b6f4e"/>
+    <rect x="1400" y="108" width="19" height="82" fill="#9b7a5a"/>
+    <rect x="1419" y="115" width="21" height="75" fill="#5a3e2b"/>
+  </svg>
+
+  <!-- Dust motes (generated by JS) -->
+  <div id="motes"></div>
+</div>
+
+<!-- QUIZ CARD -->
+<div class="quiz-container">
+  <div class="card">
+    <span class="corner-deco corner-tl">Welton Academy</span>
+    <span class="corner-deco corner-tr">Est. 1959</span>
+    <div id="quiz-root"></div>
+  </div>
+</div>
+
+<script>
+  // Dust motes
+  const motesEl = document.getElementById('motes');
+  for (let i = 0; i < 18; i++) {
+    const m = document.createElement('div');
+    m.className = 'mote';
+    const sz = Math.random() * 2.5 + 1;
+    m.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*18+12}s;
+      animation-delay:${Math.random()*12}s;
+      opacity:${Math.random()*0.5+0.2};
+    `;
+    motesEl.appendChild(m);
+  }
+
+  // ---- DATA ----
+  const questions = [
+    {
+      q: "It's a free afternoon at Welton. What do you do?",
+      opts: [
+        { text: "Write something — a poem, a story, whatever comes out", chars: { neil: 2, todd: 2, keating: 1 } },
+        { text: "Sneak out and find an adventure", chars: { neil: 3, charlie: 3 } },
+        { text: "Study ahead — you like being prepared", chars: { cameron: 3, pitts: 1 } },
+        { text: "Sit somewhere quiet and just think", chars: { todd: 3, meeks: 1 } }
+      ]
+    },
+    {
+      q: "Someone dares you to do something risky but thrilling. You:",
+      opts: [
+        { text: "Do it immediately, no hesitation", chars: { charlie: 3, neil: 2 } },
+        { text: "Think it through carefully, then do it anyway", chars: { neil: 2, keating: 2 } },
+        { text: "Cheer the others on but hang back yourself", chars: { todd: 2, meeks: 1 } },
+        { text: "Remind everyone of the consequences", chars: { cameron: 3, pitts: 1 } }
+      ]
+    },
+    {
+      q: "How do you handle authority you deeply disagree with?",
+      opts: [
+        { text: "Quietly find ways around it", chars: { neil: 2, todd: 1, keating: 1 } },
+        { text: "Challenge it openly, rules or not", chars: { charlie: 3, keating: 2 } },
+        { text: "Work within it — systems exist for a reason", chars: { cameron: 3 } },
+        { text: "Feel frustrated but stay silent", chars: { todd: 3, meeks: 1 } }
+      ]
+    },
+    {
+      q: "Your friends would describe you as:",
+      opts: [
+        { text: "The passionate one — full of ideas and energy", chars: { neil: 3, charlie: 1 } },
+        { text: "The wild card — unpredictable and delightfully bold", chars: { charlie: 3 } },
+        { text: "The quiet one who surprises everyone", chars: { todd: 3 } },
+        { text: "The reliable one — always prepared, always there", chars: { cameron: 2, meeks: 2, pitts: 1 } }
+      ]
+    },
+    {
+      q: "What matters most to you?",
+      opts: [
+        { text: "Following your passion, wherever it leads", chars: { neil: 3, keating: 2 } },
+        { text: "Living freely and refusing to be contained", chars: { charlie: 3, keating: 1 } },
+        { text: "Finding your own voice, at last", chars: { todd: 3 } },
+        { text: "Security and a clear, certain future", chars: { cameron: 3, pitts: 1 } }
+      ]
+    },
+    {
+      q: "When something moves you deeply, you:",
+      opts: [
+        { text: "Channel it into art or performance immediately", chars: { neil: 3, keating: 1 } },
+        { text: "Share it loudly with everyone around you", chars: { charlie: 2, neil: 1 } },
+        { text: "Keep it inside — feelings are a private thing", chars: { todd: 3, meeks: 1 } },
+        { text: "Analyze why it affected you so much", chars: { keating: 2, cameron: 1 } }
+      ]
+    },
+    {
+      q: "Pick the line that reaches you:",
+      opts: [
+        { text: '"Carpe diem. Seize the day, boys."', chars: { neil: 2, keating: 3, charlie: 1 } },
+        { text: '"I\'m going to be an actor. I\'ve decided."', chars: { neil: 3 } },
+        { text: '"I sound my barbaric yawp over the rooftops of the world."', chars: { todd: 3 } },
+        { text: '"From this day forward, call me... Nuwanda."', chars: { charlie: 3 } }
+      ]
+    },
+    {
+      q: "How do you feel about the spotlight?",
+      opts: [
+        { text: "I love it — the stage is where I belong", chars: { neil: 3, charlie: 2 } },
+        { text: "I create moments that put me there deliberately", chars: { charlie: 3, keating: 1 } },
+        { text: "I freeze up — but secretly, I want it so badly", chars: { todd: 3 } },
+        { text: "I'd rather support my friends from the wings", chars: { meeks: 2, pitts: 2, cameron: 1 } }
+      ]
+    }
+  ];
+
+  const characters = {
+    neil: {
+      name: "Neil Perry",
+      epithet: "The Dreamer",
+      quote: '"I went to the woods because I wished to live deliberately."',
+      desc: "You are passionate, warm, and driven by a deep hunger to live fully. You light up every room you enter and inspire those around you — but you also carry the quiet weight of expectations placed on you by others. You chase your dreams with everything you have, even when the world tells you not to.",
+      traits: ["Passionate", "Charismatic", "Idealistic", "Brave"],
+      color: "#c4848a",
+      svgChar: drawNeil
+    },
+    todd: {
+      name: "Todd Anderson",
+      epithet: "The Quiet Genius",
+      quote: '"I never thought I\'d be good at anything."',
+      desc: "You are quietly brilliant and deeply feeling. You hold entire worlds inside you that you rarely let others see — but when you finally find your voice, it stops everyone in the room cold. You underestimate yourself constantly. You shouldn't.",
+      traits: ["Introspective", "Sensitive", "Creative", "Loyal"],
+      color: "#8b6f4e",
+      svgChar: drawTodd
+    },
+    charlie: {
+      name: "Charlie Dalton",
+      epithet: "The Rebel",
+      quote: '"From this day forward, call me Nuwanda."',
+      desc: "You are bold, spontaneous, and gloriously, unapologetically yourself. You push every limit not out of recklessness but because you genuinely believe that rules which make no sense deserve no obedience. Life is wilder, funnier, and more alive with you in it.",
+      traits: ["Rebellious", "Bold", "Witty", "Free-spirited"],
+      color: "#7a8c72",
+      svgChar: drawCharlie
+    },
+    keating: {
+      name: "Mr. Keating",
+      epithet: "The Inspiration",
+      quote: '"Sucking the marrow out of life does not mean choking on the bone."',
+      desc: "You see the world differently from almost everyone else — and you cannot help but share that perspective. You challenge the people around you to think bigger, feel deeper, and live more deliberately. You lead with warmth, wisdom, and a touch of beautiful mischief.",
+      traits: ["Inspiring", "Unconventional", "Wise", "Warm"],
+      color: "#b8965a",
+      svgChar: drawKeating
+    },
+    cameron: {
+      name: "Richard Cameron",
+      epithet: "The Pragmatist",
+      quote: '"I\'m going to be a lawyer."',
+      desc: "You are practical, disciplined, and clear-eyed about how the world works. You value stability and follow-through above almost everything. People may underestimate you — but you know exactly where you're going, and you will get there.",
+      traits: ["Pragmatic", "Disciplined", "Cautious", "Focused"],
+      color: "#9b7a5a",
+      svgChar: drawCameron
+    },
+    meeks: {
+      name: "Steven Meeks",
+      epithet: "The Steady One",
+      quote: '"I understand physics."',
+      desc: "You are clever, dependable, and quietly indispensable. You may not chase the spotlight, but you're the one who actually makes things work when they need to. Your friends trust you completely and for very good reason.",
+      traits: ["Intelligent", "Reliable", "Calm", "Helpful"],
+      color: "#6b8a7a",
+      svgChar: drawMeeks
+    },
+    pitts: {
+      name: "Gerard Pitts",
+      epithet: "The Loyal Heart",
+      quote: '"Right, right, right."',
+      desc: "You are steady, good-natured, and someone people genuinely love being around. You show up. You follow through. You bring a grounding, easy energy to any group — and more than you know, people count on you for exactly that.",
+      traits: ["Loyal", "Grounded", "Easygoing", "Dependable"],
+      color: "#7a6b5a",
+      svgChar: drawPitts
+    }
+  };
+
+  // ---- SVG CHARACTER SILHOUETTES ----
+  function drawNeil(color) {
+    return `<svg width="140" height="200" viewBox="0 0 140 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Body silhouette - theatrical pose, arm raised -->
+      <ellipse cx="70" cy="32" rx="20" ry="22" fill="${color}"/>
+      <!-- Hair -->
+      <path d="M50 25 Q55 8 70 10 Q85 8 90 25 Q85 18 70 20 Q55 18 50 25Z" fill="${color}" opacity="0.9"/>
+      <!-- Neck -->
+      <rect x="63" y="52" width="14" height="12" fill="${color}"/>
+      <!-- Blazer body -->
+      <path d="M38 64 Q55 58 70 60 Q85 58 102 64 L108 140 L32 140Z" fill="${color}"/>
+      <!-- Left arm up (theatrical) -->
+      <path d="M38 70 Q22 55 15 38 Q12 30 16 26 Q20 22 24 28 Q28 42 38 75Z" fill="${color}"/>
+      <!-- Right arm down -->
+      <path d="M102 70 Q118 85 122 105 Q124 115 120 118 Q116 120 114 112 Q108 92 100 75Z" fill="${color}"/>
+      <!-- Hand raised -->
+      <ellipse cx="16" cy="24" rx="6" ry="8" fill="${color}" transform="rotate(-20 16 24)"/>
+      <!-- Legs -->
+      <path d="M52 140 L48 200 L62 200 L70 158 L78 200 L92 200 L88 140Z" fill="${color}"/>
+      <!-- Laurel wreath detail -->
+      <circle cx="62" cy="20" r="3" fill="${color}" opacity="0.6"/>
+      <circle cx="78" cy="20" r="3" fill="${color}" opacity="0.6"/>
+    </svg>`;
+  }
+
+  function drawTodd(color) {
+    return `<svg width="130" height="200" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Quiet, hunched slightly, holding book -->
+      <ellipse cx="65" cy="30" rx="19" ry="21" fill="${color}"/>
+      <!-- Hair slightly unkempt -->
+      <path d="M46 22 Q50 6 65 8 Q80 6 84 22 Q80 15 65 17 Q50 15 46 22Z" fill="${color}"/>
+      <path d="M46 20 Q44 15 47 12 Q50 10 52 16Z" fill="${color}" opacity="0.7"/>
+      <rect x="59" y="50" width="12" height="11" fill="${color}"/>
+      <!-- Body, slightly hunched -->
+      <path d="M36 60 Q52 55 65 57 Q78 55 94 60 L100 138 L30 138Z" fill="${color}"/>
+      <!-- Arms holding book -->
+      <path d="M36 65 Q24 80 22 100 Q21 110 25 112 Q29 114 30 106 Q34 86 40 70Z" fill="${color}"/>
+      <path d="M94 65 Q106 80 108 100 Q109 110 105 112 Q101 114 100 106 Q96 86 90 70Z" fill="${color}"/>
+      <!-- Book in front -->
+      <rect x="40" y="88" width="50" height="38" rx="1" fill="${color}" opacity="0.5"/>
+      <rect x="42" y="90" width="46" height="34" rx="1" fill="${color}" opacity="0.3"/>
+      <!-- Legs -->
+      <path d="M48 138 L44 200 L58 200 L65 158 L72 200 L86 200 L82 138Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  function drawCharlie(color) {
+    return `<svg width="145" height="200" viewBox="0 0 145 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Charlie - confident pose, saxophone implied -->
+      <ellipse cx="72" cy="28" rx="20" ry="22" fill="${color}"/>
+      <path d="M52 20 Q56 4 72 6 Q88 4 92 20 Q88 13 72 15 Q56 13 52 20Z" fill="${color}"/>
+      <!-- Cocky hair -->
+      <path d="M52 18 Q54 10 60 8 Q62 6 60 12Z" fill="${color}" opacity="0.8"/>
+      <rect x="65" y="49" width="14" height="12" fill="${color}"/>
+      <!-- Body - confident stance -->
+      <path d="M40 60 Q57 54 72 56 Q87 54 104 60 L112 140 L32 140Z" fill="${color}"/>
+      <!-- Left arm out with sax -->
+      <path d="M40 66 Q24 72 18 88 Q14 98 18 102 Q22 106 26 98 Q32 84 44 72Z" fill="${color}"/>
+      <!-- Right arm on hip -->
+      <path d="M104 66 Q116 74 118 86 Q120 92 116 94 Q112 96 112 88 Q108 76 100 70Z" fill="${color}"/>
+      <!-- Saxophone shape -->
+      <path d="M18 100 Q12 108 10 118 Q8 125 12 128 Q16 130 20 124 Q24 116 20 104Z" fill="${color}" opacity="0.7"/>
+      <circle cx="11" cy="126" r="5" fill="${color}" opacity="0.5"/>
+      <!-- Legs - wide stance -->
+      <path d="M46 140 L36 200 L52 200 L62 155 L82 155 L92 200 L108 200 L98 140Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  function drawKeating(color) {
+    return `<svg width="140" height="210" viewBox="0 0 140 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Keating - hands wide open, teaching pose -->
+      <ellipse cx="70" cy="30" rx="21" ry="23" fill="${color}"/>
+      <path d="M49 23 Q53 5 70 8 Q87 5 91 23 Q87 15 70 17 Q53 15 49 23Z" fill="${color}"/>
+      <rect x="63" y="52" width="14" height="12" fill="${color}"/>
+      <!-- Body - open coat -->
+      <path d="M36 62 Q54 56 70 58 Q86 56 104 62 L110 145 L30 145Z" fill="${color}"/>
+      <!-- Coat lapels -->
+      <path d="M36 62 L54 58 L60 80 L48 80Z" fill="${color}" opacity="0.6"/>
+      <path d="M104 62 L86 58 L80 80 L92 80Z" fill="${color}" opacity="0.6"/>
+      <!-- Arms spread wide - inspiring pose -->
+      <path d="M36 68 Q16 60 6 50 Q0 44 3 40 Q6 36 12 42 Q22 52 38 64Z" fill="${color}"/>
+      <path d="M104 68 Q124 60 134 50 Q140 44 137 40 Q134 36 128 42 Q118 52 102 64Z" fill="${color}"/>
+      <!-- Hands open -->
+      <ellipse cx="5" cy="40" rx="7" ry="9" fill="${color}" transform="rotate(20 5 40)"/>
+      <ellipse cx="135" cy="40" rx="7" ry="9" fill="${color}" transform="rotate(-20 135 40)"/>
+      <!-- Legs -->
+      <path d="M50 145 L44 210 L60 210 L70 162 L80 162 L90 210 L96 210 L90 145Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  function drawCameron(color) {
+    return `<svg width="130" height="200" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Cameron - rigid, upright, holding papers -->
+      <ellipse cx="65" cy="28" rx="18" ry="20" fill="${color}"/>
+      <path d="M47 22 Q51 6 65 8 Q79 6 83 22 Q79 15 65 17 Q51 15 47 22Z" fill="${color}"/>
+      <!-- Neat hair -->
+      <rect x="59" y="48" width="12" height="11" fill="${color}"/>
+      <path d="M36 58 Q52 52 65 54 Q78 52 94 58 L100 142 L30 142Z" fill="${color}"/>
+      <!-- Arms tight to body, holding papers -->
+      <path d="M36 64 Q26 72 24 88 Q22 98 26 100 Q30 102 32 92 Q34 78 38 68Z" fill="${color}"/>
+      <path d="M94 64 Q104 72 106 88 Q108 98 104 100 Q100 102 98 92 Q96 78 92 68Z" fill="${color}"/>
+      <!-- Papers/notebook -->
+      <rect x="28" y="78" width="28" height="36" rx="1" fill="${color}" opacity="0.6"/>
+      <line x1="32" y1="86" x2="52" y2="86" stroke="${color}" stroke-width="2" opacity="0.8"/>
+      <line x1="32" y1="92" x2="52" y2="92" stroke="${color}" stroke-width="2" opacity="0.8"/>
+      <line x1="32" y1="98" x2="48" y2="98" stroke="${color}" stroke-width="2" opacity="0.8"/>
+      <!-- Legs - straight, together -->
+      <path d="M49 142 L46 200 L60 200 L65 160 L70 160 L75 200 L84 200 L81 142Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  function drawMeeks(color) {
+    return `<svg width="130" height="200" viewBox="0 0 130 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Meeks - glasses, thoughtful pose -->
+      <ellipse cx="65" cy="29" rx="18" ry="20" fill="${color}"/>
+      <path d="M47 22 Q51 6 65 8 Q79 6 83 22 Q79 15 65 17 Q51 15 47 22Z" fill="${color}"/>
+      <!-- Glasses -->
+      <circle cx="58" cy="30" r="6" stroke="${color}" stroke-width="2" fill="none" opacity="0.5"/>
+      <circle cx="72" cy="30" r="6" stroke="${color}" stroke-width="2" fill="none" opacity="0.5"/>
+      <line x1="64" y1="30" x2="66" y2="30" stroke="${color}" stroke-width="1.5" opacity="0.5"/>
+      <rect x="59" y="48" width="12" height="11" fill="${color}"/>
+      <path d="M36 58 Q52 52 65 54 Q78 52 94 58 L99 142 L31 142Z" fill="${color}"/>
+      <!-- Arms, one near chin thinking -->
+      <path d="M36 64 Q28 76 26 92 Q24 102 28 104 Q32 106 33 96 Q36 82 40 68Z" fill="${color}"/>
+      <path d="M94 64 Q102 72 104 86 Q106 95 102 97 Q98 99 98 90 Q96 76 92 68Z" fill="${color}"/>
+      <!-- Thinking hand -->
+      <ellipse cx="36" cy="44" rx="8" ry="6" fill="${color}" transform="rotate(-30 36 44)"/>
+      <!-- Legs -->
+      <path d="M49 142 L45 200 L59 200 L65 160 L71 160 L77 200 L85 200 L81 142Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  function drawPitts(color) {
+    return `<svg width="135" height="200" viewBox="0 0 135 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pitts - relaxed, friendly pose -->
+      <ellipse cx="67" cy="30" rx="20" ry="22" fill="${color}"/>
+      <path d="M47 23 Q51 7 67 9 Q83 7 87 23 Q83 16 67 18 Q51 16 47 23Z" fill="${color}"/>
+      <rect x="61" y="51" width="13" height="12" fill="${color}"/>
+      <path d="M37 62 Q54 56 67 58 Q80 56 97 62 L103 142 L31 142Z" fill="${color}"/>
+      <!-- Arms relaxed, one slightly up -->
+      <path d="M37 68 Q22 76 18 94 Q16 104 20 106 Q24 108 26 98 Q30 80 40 72Z" fill="${color}"/>
+      <path d="M97 68 Q112 76 116 94 Q118 104 114 106 Q110 108 108 98 Q104 80 94 72Z" fill="${color}"/>
+      <!-- Legs - relaxed stance -->
+      <path d="M48 142 L42 200 L58 200 L67 158 L76 158 L85 200 L93 200 L87 142Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  // ---- QUIZ LOGIC ----
+  let state = 'intro';
+  let current = 0;
+  let scores = {};
+
+  function resetScores() {
+    scores = { neil: 0, todd: 0, charlie: 0, keating: 0, cameron: 0, meeks: 0, pitts: 0 };
+  }
+
+  function getWinner() {
+    return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  }
+
+  const root = document.getElementById('quiz-root');
+
+  function renderIntro() {
+    root.innerHTML = `
+      <div class="intro-wrap">
+        <div class="eyebrow">A Personality Quiz</div>
+        <h1 class="title">Which <em>Dead Poet</em><br>Are You?</h1>
+        <p class="subtitle">O captain, my captain — let us find out.</p>
+        <hr class="divider"/>
+        <div class="intro-illustration">
+          <svg width="420" height="180" viewBox="0 0 420 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Five silhouettes standing on desks -->
+            ${drawGroupSilhouette()}
+            <!-- Stars / floating words -->
+            <text x="50" y="30" font-family="Playfair Display, serif" font-size="11" fill="#c4848a" opacity="0.6" font-style="italic">carpe diem</text>
+            <text x="310" y="40" font-family="Playfair Display, serif" font-size="11" fill="#b8965a" opacity="0.6" font-style="italic">seize the day</text>
+            <text x="170" y="20" font-family="Playfair Display, serif" font-size="10" fill="#8b6f4e" opacity="0.5" font-style="italic">o captain</text>
+            <!-- Candle flames -->
+            <ellipse cx="30" cy="155" rx="3" ry="2" fill="#f5a623" opacity="0.7"/>
+            <path d="M30 153 Q31 146 30 140 Q29 146 30 153Z" fill="#f5a623" opacity="0.8"/>
+            <rect x="28" y="155" width="4" height="18" fill="#f5ede0" opacity="0.5"/>
+            <ellipse cx="390" cy="155" rx="3" ry="2" fill="#f5a623" opacity="0.7"/>
+            <path d="M390 153 Q391 146 390 140 Q389 146 390 153Z" fill="#f5a623" opacity="0.8"/>
+            <rect x="388" y="155" width="4" height="18" fill="#f5ede0" opacity="0.5"/>
+          </svg>
+        </div>
+        <p class="intro-body">Eight questions. Seven poets. One answer that might just surprise you.<br>We don't just study poetry here. We let it drip from our tongues like honey.</p>
+        <hr class="divider"/>
+        <button class="start-btn" onclick="startQuiz()">Begin ✦</button>
+      </div>
+    `;
+  }
+
+  function drawGroupSilhouette() {
+    const chars = [
+      { x: 40,  y: 170, scale: 0.52, color: '#c4848a' },
+      { x: 112, y: 155, scale: 0.58, color: '#8b6f4e' },
+      { x: 192, y: 148, scale: 0.62, color: '#7a8c72' },
+      { x: 268, y: 155, scale: 0.56, color: '#b8965a' },
+      { x: 342, y: 168, scale: 0.50, color: '#9b7a5a' },
+    ];
+    const arms = chars.map(c => `
+      <g transform="translate(${c.x}, ${c.y}) scale(${c.scale}) translate(-65, -195)">
+        <!-- Simple standing figure -->
+        <ellipse cx="65" cy="28" rx="18" ry="20" fill="${c.color}"/>
+        <rect x="59" y="47" width="12" height="10" fill="${c.color}"/>
+        <path d="M36 56 Q53 50 65 52 Q77 50 94 56 L99 140 L31 140Z" fill="${c.color}"/>
+        <path d="M48 140 L43 195 L59 195 L65 158 L71 158 L77 195 L87 195 L82 140Z" fill="${c.color}"/>
+      </g>
+    `).join('');
+    // Desk lines
+    const desks = chars.map(c => `
+      <rect x="${c.x - 22}" y="${c.y}" width="44" height="5" rx="1" fill="${c.color}" opacity="0.25"/>
+    `).join('');
+    return arms + desks;
+  }
+
+  function renderQuestion() {
+    const q = questions[current];
+    const pct = (current / questions.length) * 100;
+    root.innerHTML = `
+      <div class="eyebrow">Dead Poets Society</div>
+      <h1 class="title" style="font-size:1.5rem; margin-bottom:0.2rem;">Which poet are you?</h1>
+      <hr class="divider"/>
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span>Question ${current + 1} of ${questions.length}</span>
+          <span>${Math.round(pct)}%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <p class="question-text">${q.q}</p>
+      <div class="options">
+        ${q.opts.map((o, i) => `<button class="opt" onclick="pick(${i})">${o.text}</button>`).join('')}
+      </div>
+    `;
+  }
+
+  function renderResult() {
+    const key = getWinner();
+    const c = characters[key];
+    root.innerHTML = `
+      <div class="result-wrap">
+        <div class="result-eyebrow">You are...</div>
+        <div class="char-illustration">
+          <div class="illustration-bg"></div>
+          <svg class="arch-deco" width="300" height="200" viewBox="0 0 300 200" fill="none">
+            <path d="M10 200 Q10 80 150 60 Q290 80 290 200Z" fill="${c.color}" opacity="0.06"/>
+            <path d="M40 200 Q40 100 150 85 Q260 100 260 200Z" stroke="${c.color}" stroke-width="0.5" fill="none" opacity="0.2"/>
+          </svg>
+          <div class="char-svg-wrap">
+            ${c.svgChar(c.color)}
+          </div>
+        </div>
+        <h2 class="char-name-display">${c.name}</h2>
+        <div class="char-epithet">✦ ${c.epithet} ✦</div>
+        <p class="char-quote-display">${c.quote}</p>
+        <hr class="divider"/>
+        <p class="char-desc-display">${c.desc}</p>
+        <div class="traits-wrap">
+          ${c.traits.map(t => `<span class="trait">${t}</span>`).join('')}
+        </div>
+        <hr class="divider"/>
+        <button class="restart-btn" onclick="restart()">Try Again ✦</button>
+      </div>
+    `;
+  }
+
+  function startQuiz() {
+    current = 0;
+    resetScores();
+    state = 'quiz';
+    renderQuestion();
+  }
+
+  function pick(i) {
+    const chosen = questions[current].opts[i];
+    Object.entries(chosen.chars).forEach(([ch, v]) => { scores[ch] = (scores[ch] || 0) + v; });
+    const btns = document.querySelectorAll('.opt');
+    btns.forEach((b, j) => {
+      b.onclick = null;
+      if (j === i) b.classList.add('selected');
+    });
+    setTimeout(() => {
+      current++;
+      if (current >= questions.length) {
+        state = 'result';
+        renderResult();
+      } else {
+        renderQuestion();
+      }
+    }, 380);
+  }
+
+  function restart() {
+    state = 'intro';
+    renderIntro();
+  }
+
+  renderIntro();
+</script>
+</body>
+</html>
